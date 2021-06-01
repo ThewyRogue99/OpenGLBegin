@@ -54,7 +54,6 @@
     <ClInclude Include="src\graphics\models\Cube.hpp" />
     <ClInclude Include="src\graphics\Material.h" />
     <ClInclude Include="src\graphics\models\Lamp.hpp" />
-    <ClInclude Include="src\graphics\models\Pyramid.hpp" />
     <ClInclude Include="src\graphics\models\Sphere.hpp" />
     <ClInclude Include="src\io\Screen.h" />
     <ClInclude Include="src\io\Camera.h" />

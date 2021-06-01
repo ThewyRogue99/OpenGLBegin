@@ -1,31 +1,13 @@
 #include "Light.h"
 
-std::vector<Light*> Light::lightList = { };
+std::vector<Light*> Light::pointLightList = { };
+std::vector<Light*> Light::dirLightList = { };
+std::vector<Light*> Light::spotLightList = { };
 
-void Light::render(Shader shader, int idx)
+void Light::Render(Shader shader)
 {
-	std::string fullname = name + '[' + std::to_string(idx) + ']';
-
-	shader.set4Float(fullname + ".ambient", ambient);
-	shader.set4Float(fullname + ".diffuse", diffuse);
-	shader.set4Float(fullname + ".specular", specular);
-}
-
-void Light::renderAllLights(Shader shader)
-{
-	std::vector<Light*> pointLightList;
-	std::vector<Light*> dirLightList;
-	std::vector<Light*> spotLightList;
-
-	for (Light* light : lightList)
-	{
-		if (light->name == "pointLight")
-			pointLightList.push_back(light);
-		else if (light->name == "dirLight")
-			dirLightList.push_back(light);
-		else if (light->name == "spotLight")
-			spotLightList.push_back(light);
-	}
+	int lightIndex = getIndex();
+	if (lightIndex == -1) return;
 
 	shader.Activate();
 
@@ -37,40 +19,65 @@ void Light::renderAllLights(Shader shader)
 	shader.setInt("dirLightCount", dirLightCount);
 	shader.setInt("spotLightCount", spotLightCount);
 
-	// Render Point Lights
-	for (int i = 0; i < pointLightCount; i++)
-	{
-		Light* pointLight = pointLightList[i];
-		pointLight->render(shader, i);
-	}
+	std::string fullname = getFullName();
 
-	// Render Dir Lights
-	for (int i = 0; i < dirLightCount; i++)
-	{
-		Light* dirLight = dirLightList[i];
-		dirLight->render(shader, i);
-	}
-
-	// Render Spot Lights
-	for (int i = 0; i < spotLightCount; i++)
-	{
-		Light* spotLight = spotLightList[i];
-		spotLight->render(shader, i);
-	}
-
-	pointLightList.clear();
-	dirLightList.clear();
-	spotLightList.clear();
+	shader.set4Float(fullname + ".ambient", ambient);
+	shader.set4Float(fullname + ".diffuse", diffuse);
+	shader.set4Float(fullname + ".specular", specular);
 }
 
-void Light::cleanAllLights()
+int Light::getIndex()
 {
-	lightList.clear();
+	std::vector<Light*>* currentLightList;
+
+	switch (lightType)
+	{
+	case LightType::PointLight:
+		currentLightList = &pointLightList;
+		break;
+	case LightType::DirLight:
+		currentLightList = &dirLightList;
+		break;
+	case LightType::SpotLight:
+		currentLightList = &spotLightList;
+		break;
+	default:
+		return -1;
+	}
+
+	for (int i = 0; i < currentLightList->size(); i++)
+		if ((*currentLightList)[i] == this)
+			return i;
+
+	return -1;
 }
 
-void PointLight::render(Shader shader, int idx)
+std::string Light::getTypeName()
 {
-	std::string fullname = name + '[' + std::to_string(idx) + ']';
+	std::string result;
+
+	switch (lightType)
+	{
+	case LightType::PointLight:
+		result = "pointLight";
+		break;
+	case LightType::DirLight:
+		result = "dirLight";
+		break;
+	case LightType::SpotLight:
+		result = "spotLight";
+		break;
+	default:
+		result = "";
+		break;
+	}
+
+	return result;
+}
+
+void PointLight::Render(Shader shader)
+{
+	std::string fullname = getFullName();
 
 	shader.Activate();
 
@@ -80,23 +87,23 @@ void PointLight::render(Shader shader, int idx)
 	shader.setFloat(fullname + ".k1", k1);
 	shader.setFloat(fullname + ".k2", k2);
 
-	Light::render(shader, idx);
+	Light::Render(shader);
 }
 
-void DirLight::render(Shader shader, int idx)
+void DirLight::Render(Shader shader)
 {
-	std::string fullname = name + '[' + std::to_string(idx) + ']';
+	std::string fullname = getFullName();
 
 	shader.Activate();
 
 	shader.set3Float(fullname + ".direction", direction);
 
-	Light::render(shader, idx);
+	Light::Render(shader);
 }
 
-void SpotLight::render(Shader shader, int idx)
+void SpotLight::Render(Shader shader)
 {
-	std::string fullname = name + '[' + std::to_string(idx) + ']';
+	std::string fullname = getFullName();
 
 	shader.Activate();
 
@@ -113,5 +120,5 @@ void SpotLight::render(Shader shader, int idx)
 	shader.setFloat(fullname + ".k1", k1);
 	shader.setFloat(fullname + ".k2", k2);
 
-	Light::render(shader, idx);
+	Light::Render(shader);
 }

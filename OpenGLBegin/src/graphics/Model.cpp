@@ -1,23 +1,15 @@
 #include "Model.h"
 
-
-std::vector<Model*> Model::modelList = { };
-
 Model::Model() { }
 
-void Model::init()
+void Model::Render(Shader shader)
 {
-	modelList.push_back(this);
-}
-
-void Model::render(Shader shader)
-{
-	glm::mat4 rotationMat = glm::rotate(glm::mat4(1.f), glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f));
-	rotationMat = glm::rotate(rotationMat, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
-	rotationMat = glm::rotate(rotationMat, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
-
 	glm::mat4 model = glm::translate(glm::mat4(1.f), pos);
-	model = model * rotationMat;
+
+	model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f));
+	model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
+	model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
+
 	model = glm::scale(model, size);
 	shader.setMat4("model", model);
 
@@ -25,26 +17,12 @@ void Model::render(Shader shader)
 		mesh.render(shader);
 }
 
-void Model::renderAllModels(Shader shader)
-{
-	shader.Activate();
-
-	for (Model* model : modelList)
-		model->render(shader);
-}
-
-void Model::cleanAllModels()
-{
-	for (Model* model : modelList)
-		model->cleanup();
-
-	modelList.clear();
-}
-
-void Model::cleanup()
+void Model::DestroyObject()
 {
 	for (Mesh mesh : meshes)
 		mesh.cleanup();
+
+	Object::DestroyObject();
 }
 
 void Model::loadModel(std::string path)
@@ -61,8 +39,6 @@ void Model::loadModel(std::string path)
 
 	directory = path.substr(0, path.find_last_of('/'));
 	processNode(scene->mRootNode, scene);
-
-	init();
 }
 
 void Model::processNode(aiNode* node, const aiScene* scene)

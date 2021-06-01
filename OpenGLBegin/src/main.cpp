@@ -1,5 +1,5 @@
-#include <iostream>
 #include <glad/glad.h>
+#include <iostream>
 #include <GLFW/glfw3.h>
 #include "debug/debug.h"
 
@@ -17,11 +17,11 @@
 #include "io/Camera.h"
 #include "io/Screen.h"
 
+#include "graphics/Object.h"
 #include "graphics/Shader.h"
 #include "graphics/Model.h"
 #include "graphics/textures/Texture.h"
 #include "graphics/models/Cube.hpp"
-#include "graphics/models/Pyramid.hpp"
 #include "graphics/models/Sphere.hpp"
 #include "graphics/textures/TextureAtlas.h"
 #include "graphics/models/Lamp.hpp"
@@ -86,21 +86,27 @@ int main()
 
 	Cube ground(glm::vec3(0.f, -0.5f, 0.f), glm::vec3(100.f, 1.f, 100.f));
 	ground.init(Material::green_plastic);
+	ground.SpawnObject();
 
 	Model tank(glm::vec3(0.f, 0.f, 10.f));
 	tank.loadModel("assets/models/t90/scene.gltf");
+	tank.SpawnObject();
 
 	Model m4a1(glm::vec3(5.f, 0.15f, -5.f), glm::vec3(0.005f), glm::vec3(-90.f, 0.f, 0.f), true);
 	m4a1.loadModel("assets/models/m4a1/scene.gltf");
+	m4a1.SpawnObject();
 
 	Cube container(glm::vec3(10.f, 0.6f, -5.f));
 	container.init("assets/textures/container2.png", "assets/textures/container2_specular.png");
+	container.SpawnObject();
 
 	Model troll(glm::vec3(-5.f, 1.3f, -5.f), glm::vec3(0.01f), glm::vec3(0.f));
 	troll.loadModel("assets/models/lotr_troll/scene.gltf");
+	troll.SpawnObject();
 
 	Sphere sphere(glm::vec3(0.f, 5.f, 0.f), glm::vec3(0.02f));
 	sphere.init();
+	sphere.SpawnObject();
 
 	SpotLight spotLight = SpotLight(
 		camera.cameraPos, camera.cameraFront,
@@ -108,6 +114,7 @@ int main()
 		1.f, 0.07f, 0.032f,
 		glm::vec4(0.f, 0.f, 0.f, 1.f), glm::vec4(1.f), glm::vec4(0.f, 0.f, 0.f, 1.f)
 	);
+	spotLight.SpawnObject();
 
 	Lamp sun(
 		glm::vec4(1.f), glm::vec4(1.f),
@@ -115,6 +122,7 @@ int main()
 		glm::vec3(0.f, 100.f, 100.f), glm::vec3(0.25f)
 	);
 	sun.init();
+	sun.SpawnObject();
 
 	/*Lamp lamp(
 		glm::vec4(1.f), glm::vec4(1.f),
@@ -124,6 +132,7 @@ int main()
 	lamp.init();*/
 	
 	double lastFrame = 0;
+	int i = 0;
 
 	/* Main Loop */
 	while (!screen.shouldClose())
@@ -170,24 +179,23 @@ int main()
 		spotLight.direction = camera.cameraFront;
 
 		if (Keyboard::key(GLFW_KEY_RIGHT))
-			m4a1.rotation.y -= 20 * (float)deltaTime;
+			container.rotation.y -= 20 * (float)deltaTime;
 		if(Keyboard::key(GLFW_KEY_LEFT))
-			m4a1.rotation.y += 20 * (float)deltaTime;
+			container.rotation.y += 20 * (float)deltaTime;
 		if (Keyboard::key(GLFW_KEY_UP))
-			m4a1.rotation.z += 20 * (float)deltaTime;
+			container.rotation.x += 20 * (float)deltaTime;
 		if (Keyboard::key(GLFW_KEY_DOWN))
-			m4a1.rotation.z -= 20 * (float)deltaTime;
+			container.rotation.x -= 20 * (float)deltaTime;
 
-		Model::renderAllModels(mainShader);
-		Light::renderAllLights(mainShader);
+		Object::RenderAllObjects(mainShader);
+		Object::UpdateAllObjects((float)deltaTime);
 
 		screen.newFrame();
 
-		//printf("FPS: %i\r", (int)(1.0 / deltaTime));
+		printf("FPS: %i\r", (int)(1.0 / deltaTime));
 	}
 
-	Model::cleanAllModels();
-	Light::cleanAllLights();
+	Object::DestroyAllObjects();
 
 	glfwTerminate();
 	return 0;

@@ -1,17 +1,46 @@
 #include "Object.h"
 
+std::vector<Object*> Object::objectList = { };
+
 void Object::BeginPlay() { }
 
 void Object::Update(float deltaTime) { }
 
-void Object::SpawnObject(Object* object)
-{
-	object->BeginPlay();
+void Object::Render(Shader shader) { }
 
-	objectList.push_back(object);
+void Object::RenderAllObjects(Shader shader)
+{
+	shader.Activate();
+
+	for (Object* object : objectList)
+		object->Render(shader);
 }
 
-void Object::DestroyObject(Object* object)
+void Object::UpdateAllObjects(float deltaTime)
 {
+	for (Object* object : objectList)
+		if (object->UseUpdate)
+			object->Update(deltaTime);
+}
 
+void Object::DestroyAllObjects()
+{
+	int size = objectList.size();
+
+	for (int i = 0; i < size; i++)
+		objectList[0]->DestroyObject();
+}
+
+void Object::SpawnObject()
+{
+	BeginPlay();
+
+	objectList.push_back(this);
+}
+
+void Object::DestroyObject()
+{
+	for (int i = 0; i < objectList.size(); i++)
+		if (objectList[i] == this)
+			objectList.erase(objectList.begin() + i);
 }

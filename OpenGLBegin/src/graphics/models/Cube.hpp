@@ -35,8 +35,6 @@ public:
 		}
 
 		meshes.push_back(Mesh(Vertex::genList(vertices, nVertices), indices, textureList));
-
-		Model::init();
 	}
 
 	void init(Material material)
@@ -51,7 +49,6 @@ public:
 			indices[i] = i;
 
 		meshes.push_back(Mesh(Vertex::genList(vertices, nVertices), indices, diffuse, specular));
-		Model::init();
 	}
 
 	void init(TextureAtlas* textAtlas, std::vector<int> texIndexList) {
@@ -99,8 +96,6 @@ public:
 			indices[i] = i;
 
 		meshes.push_back(Mesh(Vertex::genList(vertices, nVertices), indices, { *textAtlas }));
-
-		Model::init();
 	}
 
 private:

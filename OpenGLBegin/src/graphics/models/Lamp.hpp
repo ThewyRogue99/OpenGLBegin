@@ -23,8 +23,15 @@ public:
 		Cube::init({ pointLight.ambient, pointLight.diffuse, pointLight.specular, 1.f });
 	}
 
-	virtual void render(Shader shader) override
+	virtual void BeginPlay() override
 	{
-		Cube::render(shader);
+		Object::BeginPlay();
+
+		pointLight.SpawnObject();
+	}
+
+	virtual void Render(Shader shader) override
+	{
+		Cube::Render(shader);
 	}
 };
