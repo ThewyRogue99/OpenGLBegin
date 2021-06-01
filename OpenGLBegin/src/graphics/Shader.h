@@ -10,7 +10,7 @@
 
 #include <fstream>
 #include <string>
-#include "../debug/debug.h"
+#include "../io/debug.h"
 
 class Shader
 {

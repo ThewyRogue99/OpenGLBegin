@@ -6,17 +6,17 @@ Camera* Camera::defaultCamera = nullptr;
 Camera::Camera(glm::vec3 position, bool isDefault)
     : cameraPos(position),
     worldUp(glm::vec3(0.f, 1.f, 0.f)),
-    cameraRotation(0.f, 0.f, 0.f),
+    cameraRotation(0.f, 270.f, 0.f),
     speed(2.5f),
     sensitivity(1.5f),
     zoom(45.f),
     cameraFront(glm::vec3(1.f, 0.f, 0.f)) {
 
-        if (isDefault)
-            defaultCamera = this;
+    if (isDefault)
+        defaultCamera = this;
 
-        updateCameraVectors(); 
-    }
+    updateCameraVectors(); 
+}
 
 // change camera direction (mouse movement)
 void Camera::updateCameraDirection(double dx, double dy)

@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 
 #include "Shader.h"
-#include "Object.h"
+#include "../engine/Object.h"
 #include <vector>
 
 enum class LightType

@@ -1,7 +1,7 @@
 #include <glad/glad.h>
 #include <iostream>
 #include <GLFW/glfw3.h>
-#include "debug/debug.h"
+#include "io/debug.h"
 
 #include <fstream>
 #include <string>
@@ -17,7 +17,6 @@
 #include "io/Camera.h"
 #include "io/Screen.h"
 
-#include "graphics/Object.h"
 #include "graphics/Shader.h"
 #include "graphics/Model.h"
 #include "graphics/textures/Texture.h"
@@ -27,13 +26,15 @@
 #include "graphics/models/Lamp.hpp"
 #include "graphics/Light.h"
 
+#include "engine/Object.h"
+
 void processInput();
 
 double deltaTime = 0;
 
 unsigned int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
 
-Camera camera(glm::vec3(0.f, 1.f, 5.f));
+Camera camera(glm::vec3(0.f, 0.f, 5.f));
 
 Screen screen(1024, 720);
 
@@ -49,7 +50,7 @@ int main()
 
 	if (glfwInit() == GLFW_FALSE)
 	{
-		printError("Failed to initialize GLFW");
+		ConsoleLog(ConsoleError, "Failed to initialize GLFW");
 		return -1;
 	}
 
@@ -65,12 +66,17 @@ int main()
 #endif
 
 	//Create a new window
-	screen.init("OpenGL Tutorial");
+	if (!screen.init("OpenGL Tutorial"))
+	{
+		ConsoleLog(ConsoleError, "Failed to initialize screen");
+		glfwTerminate();
+		return -1;
+	}
 
 	//Initialize GLAD
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
-		printError("Failed to initialize GLAD");
+		ConsoleLog(ConsoleError, "Failed to initialize GLAD");
 		glfwTerminate();
 		return -1;
 	}
@@ -83,30 +89,6 @@ int main()
 	Shader mainShader("assets/object.vs", "assets/object.fs");
 
 	/* Objects */
-
-	Cube ground(glm::vec3(0.f, -0.5f, 0.f), glm::vec3(100.f, 1.f, 100.f));
-	ground.init(Material::green_plastic);
-	ground.SpawnObject();
-
-	Model tank(glm::vec3(0.f, 0.f, 10.f));
-	tank.loadModel("assets/models/t90/scene.gltf");
-	tank.SpawnObject();
-
-	Model m4a1(glm::vec3(5.f, 0.15f, -5.f), glm::vec3(0.005f), glm::vec3(-90.f, 0.f, 0.f), true);
-	m4a1.loadModel("assets/models/m4a1/scene.gltf");
-	m4a1.SpawnObject();
-
-	Cube container(glm::vec3(10.f, 0.6f, -5.f));
-	container.init("assets/textures/container2.png", "assets/textures/container2_specular.png");
-	container.SpawnObject();
-
-	Model troll(glm::vec3(-5.f, 1.3f, -5.f), glm::vec3(0.01f), glm::vec3(0.f));
-	troll.loadModel("assets/models/lotr_troll/scene.gltf");
-	troll.SpawnObject();
-
-	Sphere sphere(glm::vec3(0.f, 5.f, 0.f), glm::vec3(0.02f));
-	sphere.init();
-	sphere.SpawnObject();
 
 	SpotLight spotLight = SpotLight(
 		camera.cameraPos, camera.cameraFront,
@@ -123,13 +105,6 @@ int main()
 	);
 	sun.init();
 	sun.SpawnObject();
-
-	/*Lamp lamp(
-		glm::vec4(1.f), glm::vec4(1.f),
-		1.f, 0.07f, 0.032f,
-		glm::vec3(0.f, 1.f, 0.f), glm::vec3(0.25f)
-	);
-	lamp.init();*/
 	
 	double lastFrame = 0;
 	int i = 0;
@@ -178,15 +153,6 @@ int main()
 		spotLight.position = camera.cameraPos;
 		spotLight.direction = camera.cameraFront;
 
-		if (Keyboard::key(GLFW_KEY_RIGHT))
-			container.rotation.y -= 20 * (float)deltaTime;
-		if(Keyboard::key(GLFW_KEY_LEFT))
-			container.rotation.y += 20 * (float)deltaTime;
-		if (Keyboard::key(GLFW_KEY_UP))
-			container.rotation.x += 20 * (float)deltaTime;
-		if (Keyboard::key(GLFW_KEY_DOWN))
-			container.rotation.x -= 20 * (float)deltaTime;
-
 		Object::RenderAllObjects(mainShader);
 		Object::UpdateAllObjects((float)deltaTime);
 
@@ -201,11 +167,23 @@ int main()
 	return 0;
 }
 
+void LaunchObject()
+{
+	Sphere* sphere = new Sphere(Camera::defaultCamera->cameraPos, glm::vec3(0.02f));
+	sphere->init();
+	sphere->SpawnObject();
+
+	sphere->rigidbody.ApplyAcceleration(Environment::EnvironmentalAcceleration);
+	sphere->rigidbody.ApplyImpulse(Camera::defaultCamera->cameraFront, 5000.f);
+}
+
 void processInput()
 {
+	// Screen should close
 	if (Keyboard::key(GLFW_KEY_ESCAPE))
 		screen.setShouldClose(true);
 
+	// Camera Movement
 	if (Keyboard::key(GLFW_KEY_W))
 		camera.updateCameraPos(CameraDirection::FORWARD, deltaTime);
 	if (Keyboard::key(GLFW_KEY_S))
@@ -220,6 +198,7 @@ void processInput()
 	if (Keyboard::key(GLFW_KEY_LEFT_SHIFT))
 		camera.updateCameraPos(CameraDirection::DOWN, deltaTime);
 
+	// Camera view movement
 	double dx = Mouse::getDX(), dy = Mouse::getDY();
 	if (dx != 0 || dy != 0)
 		camera.updateCameraDirection(dx * deltaTime, dy * deltaTime);
@@ -227,4 +206,7 @@ void processInput()
 	double scrollDY = Mouse::getScrollDY();
 	if (scrollDY != 0)
 		camera.updateCameraZoom(scrollDY);
+
+	if (Keyboard::keyWentDown(GLFW_KEY_L))
+		LaunchObject();
 }

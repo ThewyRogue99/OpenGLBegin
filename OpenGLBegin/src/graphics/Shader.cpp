@@ -26,7 +26,7 @@ void Shader::generate(const char* vertexShaderFilePath, const char* fragmentShad
 		char infoLog[512];
 		glGetProgramInfoLog(id, 512, NULL, infoLog);
 
-		printError("Failed to run shader.\nLog: " + std::string(infoLog));
+		ConsoleLog(ConsoleError, std::string("Failed to run shader.\nLog: " + std::string(infoLog)).c_str());
 		id = 0;
 	}
 
@@ -57,12 +57,13 @@ unsigned int Shader::compileShader(const char* filepath, int type)
 		{
 			char infoLog[512];
 			glGetShaderInfoLog(shaderAddress, 512, NULL, infoLog);
-			printError("Failed to compile shader.\nLog: " + std::string(infoLog));
+
+			ConsoleLog(ConsoleError, std::string("Failed to compile shader.\nLog: " + std::string(infoLog)).c_str());
 			shaderAddress = 0;
 		}
 	}
 	else
-		printError("Failed to open shader file in: " + std::string(filepath));
+		ConsoleLog(ConsoleError, std::string("Failed to open shader file in: " + std::string(filepath)).c_str());
 
 	file.close();
 

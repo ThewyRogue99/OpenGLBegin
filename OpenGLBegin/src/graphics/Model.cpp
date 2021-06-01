@@ -4,7 +4,7 @@ Model::Model() { }
 
 void Model::Render(Shader shader)
 {
-	glm::mat4 model = glm::translate(glm::mat4(1.f), pos);
+	glm::mat4 model = glm::translate(glm::mat4(1.f), rigidbody.position);
 
 	model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f));
 	model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
@@ -33,7 +33,7 @@ void Model::loadModel(std::string path)
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
-		printError(importer.GetErrorString());
+		ConsoleLog(ConsoleError, importer.GetErrorString());
 		return;
 	}
 

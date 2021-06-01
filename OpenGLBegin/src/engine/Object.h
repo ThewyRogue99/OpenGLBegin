@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "Shader.h"
+#include "../graphics/Shader.h"
 
 class Object
 {
@@ -15,7 +15,7 @@ public:
 
 	static void DestroyAllObjects();
 
-	void SpawnObject();
+	virtual void SpawnObject();
 
 	static void SpawnObject(Object* object) { object->SpawnObject(); }
 
@@ -26,8 +26,12 @@ public:
 protected:
 	virtual void Render(Shader shader);
 
+	float GetDeltaTime() { return dt; }
+
 	bool UseUpdate = true;
 
 private:
 	static std::vector<Object*> objectList;
+
+	float dt = 0.f;
 };

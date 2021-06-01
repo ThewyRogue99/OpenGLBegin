@@ -4,7 +4,7 @@ std::vector<Object*> Object::objectList = { };
 
 void Object::BeginPlay() { }
 
-void Object::Update(float deltaTime) { }
+void Object::Update(float deltaTime) { dt = deltaTime; }
 
 void Object::Render(Shader shader) { }
 
