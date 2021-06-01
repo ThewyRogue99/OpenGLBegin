@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{9b8428f0-2426-49d7-8c04-fb2f38170125}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib">
+      <UniqueIdentifier>{efc5d1e4-bd78-4c5d-9c26-d1efc1d797c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets">
+      <UniqueIdentifier>{f90a72b2-6966-4f3a-99cf-125118796dfc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\stb.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\glad.c">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\io\Keyboard.cpp" />
+    <ClCompile Include="src\io\Mouse.cpp" />
+    <ClCompile Include="src\io\Joystick.cpp" />
+    <ClCompile Include="src\io\Camera.cpp" />
+    <ClCompile Include="src\graphics\Shader.cpp" />
+    <ClCompile Include="src\io\Screen.cpp" />
+    <ClCompile Include="src\graphics\Mesh.cpp" />
+    <ClCompile Include="src\graphics\Model.cpp" />
+    <ClCompile Include="src\graphics\textures\Texture.cpp" />
+    <ClCompile Include="src\graphics\textures\TextureAtlas.cpp" />
+    <ClCompile Include="src\graphics\Material.cpp" />
+    <ClCompile Include="src\graphics\Light.cpp" />
+    <ClCompile Include="src\graphics\Object.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\object.vs">
+      <Filter>assets</Filter>
+    </None>
+    <None Include="assets\object.fs" />
+    <None Include="assets\models\lotr_troll\scene.gltf" />
+    <None Include="assets\models\m4a1\scene.bin" />
+    <None Include="assets\models\m4a1\scene.gltf" />
+    <None Include="assets\models\den_scethfab\scene.gltf" />
+    <None Include="assets\models\aircon\source\Untitled.fbx" />
+    <None Include="assets\models\sphere\scene.gltf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\io\Keyboard.h" />
+    <ClInclude Include="src\io\Mouse.h" />
+    <ClInclude Include="src\io\Joystick.h" />
+    <ClInclude Include="src\io\Camera.h" />
+    <ClInclude Include="src\graphics\Shader.h" />
+    <ClInclude Include="src\debug\debug.h" />
+    <ClInclude Include="src\io\Screen.h" />
+    <ClInclude Include="src\graphics\Mesh.h" />
+    <ClInclude Include="src\graphics\Model.h" />
+    <ClInclude Include="src\graphics\models\Cube.hpp" />
+    <ClInclude Include="src\graphics\models\Pyramid.hpp" />
+    <ClInclude Include="src\graphics\textures\Texture.h" />
+    <ClInclude Include="src\graphics\textures\TextureAtlas.h" />
+    <ClInclude Include="src\graphics\Material.h" />
+    <ClInclude Include="src\graphics\models\Lamp.hpp" />
+    <ClInclude Include="src\graphics\Light.h" />
+    <ClInclude Include="src\graphics\models\Sphere.hpp" />
+    <ClInclude Include="src\graphics\Object.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\textures\CGA-palette.png" />
+    <Image Include="assets\textures\solid-white.png" />
+    <Image Include="assets\textures\Solid_red.png" />
+    <Image Include="assets\textures\atlas\MinecraftTextureAtlas.png" />
+    <Image Include="assets\textures\container2.png" />
+    <Image Include="assets\textures\container2_specular.png" />
+    <Image Include="assets\textures\matrix.jpg" />
+  </ItemGroup>
+</Project>
