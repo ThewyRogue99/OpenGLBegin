@@ -11,7 +11,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <vector>
-#include <Windows.h>
 
 #include "../engine/Object.h"
 #include "Mesh.h"
@@ -32,16 +31,16 @@ public:
 	Model();
 
 	Model(glm::vec3 pos = glm::vec3(0.f), glm::vec3 size = glm::vec3(1.f), glm::vec3 rotation = glm::vec3(0.f), bool noTex = false) :
-		size(size), rotation(rotation), noTex(noTex) {
+		pos(pos) ,size(size), rotation(rotation), noTex(noTex) {
 
-		rigidbody.position = pos;
+		rigidbody = RigidBody(1.f, pos, glm::vec3(0.f), Environment::EnvironmentalAcceleration);
 	};
 
 	void loadModel(std::string path);
 
 	virtual void BeginPlay() override { Object::BeginPlay(); rigidbody.SpawnObject(); }
 
-	virtual void Render(Shader shader) override;
+	virtual void Render(Shader& shader) override;
 
 	virtual void DestroyObject() override;
 

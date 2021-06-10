@@ -9,9 +9,7 @@ public:
 
 	virtual void Update(float deltaTime);
 
-	static void RenderAllObjects(Shader shader);
-
-	static void UpdateAllObjects(float deltaTime);
+	static void RenderAllObjects(Shader& shader, float deltaTime);
 
 	static void DestroyAllObjects();
 
@@ -24,7 +22,7 @@ public:
 	static void DestroyObject(Object* object) { object->DestroyObject(); }
 
 protected:
-	virtual void Render(Shader shader);
+	virtual void Render(Shader& shader);
 
 	float GetDeltaTime() { return dt; }
 

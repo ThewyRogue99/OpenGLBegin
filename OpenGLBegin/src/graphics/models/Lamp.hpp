@@ -30,7 +30,7 @@ public:
 		pointLight.SpawnObject();
 	}
 
-	virtual void Render(Shader shader) override
+	virtual void Render(Shader& shader) override
 	{
 		Cube::Render(shader);
 	}

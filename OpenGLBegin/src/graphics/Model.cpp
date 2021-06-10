@@ -2,8 +2,10 @@
 
 Model::Model() { }
 
-void Model::Render(Shader shader)
+void Model::Render(Shader& shader)
 {
+	shader.Activate();
+
 	glm::mat4 model = glm::translate(glm::mat4(1.f), rigidbody.position);
 
 	model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f));
@@ -13,14 +15,16 @@ void Model::Render(Shader shader)
 	model = glm::scale(model, size);
 	shader.setMat4("model", model);
 
-	for (Mesh mesh : meshes)
+	for (Mesh& mesh : meshes)
 		mesh.render(shader);
 }
 
 void Model::DestroyObject()
 {
-	for (Mesh mesh : meshes)
+	for (Mesh& mesh : meshes)
 		mesh.cleanup();
+
+	meshes.clear();
 
 	Object::DestroyObject();
 }

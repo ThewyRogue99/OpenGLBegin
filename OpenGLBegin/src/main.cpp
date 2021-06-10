@@ -153,28 +153,17 @@ int main()
 		spotLight.position = camera.cameraPos;
 		spotLight.direction = camera.cameraFront;
 
-		Object::RenderAllObjects(mainShader);
-		Object::UpdateAllObjects((float)deltaTime);
+		Object::RenderAllObjects(mainShader, (float)deltaTime);
 
 		screen.newFrame();
 
-		printf("FPS: %i\r", (int)(1.0 / deltaTime));
+		//printf("FPS: %i\r", (int)(1.0 / deltaTime));
 	}
 
 	Object::DestroyAllObjects();
 
 	glfwTerminate();
 	return 0;
-}
-
-void LaunchObject()
-{
-	Sphere* sphere = new Sphere(Camera::defaultCamera->cameraPos, glm::vec3(0.02f));
-	sphere->init();
-	sphere->SpawnObject();
-
-	sphere->rigidbody.ApplyAcceleration(Environment::EnvironmentalAcceleration);
-	sphere->rigidbody.ApplyImpulse(Camera::defaultCamera->cameraFront, 5000.f);
 }
 
 void processInput()
@@ -207,6 +196,11 @@ void processInput()
 	if (scrollDY != 0)
 		camera.updateCameraZoom(scrollDY);
 
-	if (Keyboard::keyWentDown(GLFW_KEY_L))
-		LaunchObject();
+	if (Keyboard::key(GLFW_KEY_L))
+	{
+		Cube* cube = new Cube(Camera::defaultCamera->cameraFront);
+		cube->init("assets/textures/container2.png");
+		cube->SpawnObject();
+		cube->rigidbody.ApplyImpulse(Camera::defaultCamera->cameraFront, 5000.f);
+	}
 }

@@ -4,7 +4,7 @@ std::vector<Light*> Light::pointLightList = { };
 std::vector<Light*> Light::dirLightList = { };
 std::vector<Light*> Light::spotLightList = { };
 
-void Light::Render(Shader shader)
+void Light::Render(Shader& shader)
 {
 	int lightIndex = getIndex();
 	if (lightIndex == -1) return;
@@ -75,7 +75,7 @@ std::string Light::getTypeName()
 	return result;
 }
 
-void PointLight::Render(Shader shader)
+void PointLight::Render(Shader& shader)
 {
 	std::string fullname = getFullName();
 
@@ -90,7 +90,7 @@ void PointLight::Render(Shader shader)
 	Light::Render(shader);
 }
 
-void DirLight::Render(Shader shader)
+void DirLight::Render(Shader& shader)
 {
 	std::string fullname = getFullName();
 
@@ -101,7 +101,7 @@ void DirLight::Render(Shader shader)
 	Light::Render(shader);
 }
 
-void SpotLight::Render(Shader shader)
+void SpotLight::Render(Shader& shader)
 {
 	std::string fullname = getFullName();
 

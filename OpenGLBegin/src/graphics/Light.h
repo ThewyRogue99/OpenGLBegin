@@ -31,7 +31,7 @@ public:
 			spotLightList.push_back(this);
 	};
 
-	virtual void Render(Shader shader) override;
+	virtual void Render(Shader& shader) override;
 
 protected:
 	static std::vector<Light*> pointLightList;
@@ -61,7 +61,7 @@ public:
 	PointLight(glm::vec3 position, float k0, float k1, float k2, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular)
 		: position(position), k0(k0), k1(k1), k2(k2), Light(ambient, diffuse, specular, LightType::PointLight) { }
 
-	virtual void Render(Shader shader) override;
+	virtual void Render(Shader& shader) override;
 };
 
 class DirLight : public Light
@@ -72,7 +72,7 @@ public:
 	DirLight(glm::vec3 direction, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular)
 		: direction(direction), Light(ambient, diffuse, specular, LightType::DirLight) { }
 
-	virtual void Render(Shader shader) override;
+	virtual void Render(Shader& shader) override;
 };
 
 class SpotLight : public Light
@@ -94,5 +94,5 @@ public:
 		k0(k0), k1(k1), k2(k2),
 		Light(ambient, diffuse, specular, LightType::SpotLight) { }
 
-	virtual void Render(Shader shader) override;
+	virtual void Render(Shader& shader) override;
 };

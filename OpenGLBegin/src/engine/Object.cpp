@@ -6,21 +6,16 @@ void Object::BeginPlay() { }
 
 void Object::Update(float deltaTime) { dt = deltaTime; }
 
-void Object::Render(Shader shader) { }
+void Object::Render(Shader& shader) { }
 
-void Object::RenderAllObjects(Shader shader)
+void Object::RenderAllObjects(Shader& shader, float deltaTime)
 {
-	shader.Activate();
-
 	for (Object* object : objectList)
+	{
 		object->Render(shader);
-}
-
-void Object::UpdateAllObjects(float deltaTime)
-{
-	for (Object* object : objectList)
 		if (object->UseUpdate)
 			object->Update(deltaTime);
+	}
 }
 
 void Object::DestroyAllObjects()

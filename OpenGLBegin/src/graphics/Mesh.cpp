@@ -43,8 +43,10 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, aiCo
 	setup();
 }
 
-void Mesh::render(Shader shader)
+void Mesh::render(Shader& shader)
 {
+	shader.Activate();
+
 	if (noTex)
 	{
 		shader.set4Float("material.diffuse", diffuse);
@@ -61,7 +63,7 @@ void Mesh::render(Shader shader)
 		for (unsigned int i = 0; i < textures.size(); i++)
 		{
 			Texture tex = textures[i];
-			glActiveTexture(GL_TEXTURE0 + tex.id);
+			tex.bind();
 
 			std::string name;
 			switch (tex.type)
@@ -74,8 +76,6 @@ void Mesh::render(Shader shader)
 				break;
 			}
 			shader.setInt(name, tex.id);
-
-			tex.bind();
 		}
 	}
 
