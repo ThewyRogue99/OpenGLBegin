@@ -1,4 +1,5 @@
 #include "camera.h"
+#include "../engine/Engine.h"
 
 Camera* Camera::defaultCamera = nullptr;
 
@@ -21,8 +22,10 @@ Camera::Camera(glm::vec3 position, bool isDefault)
 // change camera direction (mouse movement)
 void Camera::updateCameraDirection(double dx, double dy)
 {
-    float copyPitch = *pitch + ((float)dy * sensitivity * 20.f);
-    float copyYaw = *yaw + ((float)dx * sensitivity * 20.f);
+    float deltaTime = Engine::GetDeltaTime();
+
+    float copyPitch = *pitch + (((float)dy * deltaTime) * sensitivity * 20.f);
+    float copyYaw = *yaw + (((float)dx * deltaTime) * sensitivity * 20.f);
 
     if (copyPitch > 89.f)
         *pitch = 89.f;
@@ -42,9 +45,11 @@ void Camera::updateCameraDirection(double dx, double dy)
 }
 
 // change camera position in certain direction (keyboard)
-void Camera::updateCameraPos(CameraDirection direction, double dt)
+void Camera::updateCameraPos(CameraDirection direction)
 {
-    float velocity = (float)dt * speed;
+    float deltaTime = Engine::GetDeltaTime();
+
+    float velocity = (float)deltaTime * speed;
 
     switch (direction)
     {

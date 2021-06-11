@@ -1,4 +1,5 @@
 #include "RigidBody.h"
+#include "../engine/Engine.h"
 
 void RigidBody::Update(float deltaTime)
 {
@@ -30,7 +31,7 @@ void RigidBody::ApplyAcceleration(glm::vec3 direction, float magnitude)
 
 void RigidBody::ApplyImpulse(glm::vec3 force)
 {
-	velocity += force / mass * GetDeltaTime();
+	velocity += force / mass * Engine::GetDeltaTime();
 }
 
 void RigidBody::ApplyImpulse(glm::vec3 direction, float magnitude)

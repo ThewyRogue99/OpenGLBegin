@@ -37,7 +37,7 @@ public:
 	};
 
 	void loadModel(std::string path);
-
+	
 	virtual void BeginPlay() override { Object::BeginPlay(); rigidbody.SpawnObject(); }
 
 	virtual void Render(Shader& shader) override;

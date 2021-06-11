@@ -15,6 +15,11 @@ void Screen::framebuffer_size_callback(GLFWwindow* window, int _width, int _heig
 
 Screen::Screen(unsigned int _width, unsigned int _height)
 {
+	setup(_width, _height);
+}
+
+void Screen::setup(unsigned int _width, unsigned int _height)
+{
 	width = _width;
 	height = _height;
 	window = nullptr;

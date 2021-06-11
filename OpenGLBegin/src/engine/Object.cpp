@@ -1,15 +1,18 @@
 #include "Object.h"
+#include "Engine.h"
 
 std::vector<Object*> Object::objectList = { };
 
 void Object::BeginPlay() { }
 
-void Object::Update(float deltaTime) { dt = deltaTime; }
+void Object::Update(float deltaTime) { }
 
 void Object::Render(Shader& shader) { }
 
-void Object::RenderAllObjects(Shader& shader, float deltaTime)
+void Object::RenderAllObjects(Shader& shader)
 {
+	float deltaTime = Engine::GetDeltaTime();
+
 	for (Object* object : objectList)
 	{
 		object->Render(shader);

@@ -36,6 +36,7 @@
     <ClCompile Include="src\engine\Object.cpp" />
     <ClCompile Include="src\physics\RigidBody.cpp" />
     <ClCompile Include="src\physics\Environment.cpp" />
+    <ClCompile Include="src\engine\Engine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\object.vs">
@@ -69,6 +70,7 @@
     <ClInclude Include="src\engine\Object.h" />
     <ClInclude Include="src\physics\RigidBody.h" />
     <ClInclude Include="src\physics\Environment.h" />
+    <ClInclude Include="src\engine\Engine.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\textures\CGA-palette.png" />

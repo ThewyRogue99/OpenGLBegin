@@ -46,7 +46,7 @@ public:
     void updateCameraDirection(double dx, double dy);
 
     // change camera position in certain direction (keyboard)
-    void updateCameraPos(CameraDirection direction, double dt);
+    void updateCameraPos(CameraDirection direction);
 
     // change camera zoom (scroll wheel)
     void updateCameraZoom(double dy);

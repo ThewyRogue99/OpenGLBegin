@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\engine\Engine.cpp" />
     <ClCompile Include="src\physics\Environment.cpp" />
     <ClCompile Include="src\physics\RigidBody.cpp" />
     <ClCompile Include="src\engine\Object.cpp" />
@@ -49,6 +50,7 @@
     <None Include="assets\object.fs" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\Engine.h" />
     <ClInclude Include="src\physics\Environment.h" />
     <ClInclude Include="src\physics\RigidBody.h" />
     <ClInclude Include="src\engine\Object.h" />

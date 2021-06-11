@@ -9,7 +9,10 @@ public:
 	static unsigned int width;
 	static unsigned int height;
 
+	Screen() { window = nullptr; }
 	Screen(unsigned int width, unsigned int height);
+
+	void setup(unsigned int _width, unsigned int _height);
 
 	bool init(const char* title = "Screen");
 

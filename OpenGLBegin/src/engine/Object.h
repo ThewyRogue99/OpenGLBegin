@@ -9,7 +9,7 @@ public:
 
 	virtual void Update(float deltaTime);
 
-	static void RenderAllObjects(Shader& shader, float deltaTime);
+	static void RenderAllObjects(Shader& shader);
 
 	static void DestroyAllObjects();
 
@@ -24,12 +24,8 @@ public:
 protected:
 	virtual void Render(Shader& shader);
 
-	float GetDeltaTime() { return dt; }
-
 	bool UseUpdate = true;
 
 private:
 	static std::vector<Object*> objectList;
-
-	float dt = 0.f;
 };
